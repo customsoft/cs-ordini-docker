@@ -1,0 +1,76 @@
+version: '3'
+services:
+  cs-ordini-api:
+    restart: always
+    build:
+      context: ./cs-ordini-api
+      dockerfile: Dockerfile
+    networks:
+      - cs-ordini_network
+    # Altri parametri come porte, volumi, reti, ecc.
+
+  cs-ordini-backup:
+    restart: always
+    build:
+      context: ./cs-ordini-backup
+      dockerfile: Dockerfile
+    networks:
+      - cs-ordini_network
+    # Altri parametri come porte, volumi, reti, ecc.
+
+  cs-ordini-cache:
+    restart: always
+    build:
+      context: ./cs-ordini-cache
+      dockerfile: Dockerfile
+    networks:
+      - cs-ordini_network
+    # Altri parametri come porte, volumi, reti, ecc.
+
+  cs-ordini-cloud:
+    image: nextcloud:latest
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - nextcloud_data:/var/www/html
+    networks:
+      - cs-ordini_network
+    # Altri parametri di configurazione di Nextcloud
+
+  cs-ordini-db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example_password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - cs-ordini_network
+    # Altri parametri di configurazione del database
+
+  cs-ordini-log:
+    restart: always
+    build:
+      context: ./cs-ordini-log
+      dockerfile: Dockerfile
+    networks:
+      - cs-ordini_network
+    # Altri parametri come porte, volumi, reti, ecc.
+
+  cs-ordini-vue:
+    restart: always
+    build:
+      context: ./cs-ordini-vue
+      dockerfile: Dockerfile
+    networks:
+      - cs-ordini_network
+    # Altri parametri come porte, volumi, reti, ecc.
+
+networks:
+  cs-ordini_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  nextcloud_data:

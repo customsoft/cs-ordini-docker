@@ -1,0 +1,11 @@
+# Utilizza l'immagine di base di Redis
+FROM redis:latest
+
+# Copia i file di configurazione personalizzati (se necessario)
+# COPY redis.conf /usr/local/etc/redis/redis.conf
+
+# Porta predefinita di Redis (può essere cambiata nel file di configurazione)
+EXPOSE 6379
+
+# Comando di avvio di Redis
+CMD ["redis-server"]

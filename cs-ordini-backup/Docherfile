@@ -1,0 +1,19 @@
+# Utilizza l'immagine di base di Alpine Linux
+FROM alpine:latest
+
+# Installa Rclone e altri pacchetti necessari
+RUN apk add --no-cache curl unzip ca-certificates && \
+    curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
+    unzip rclone-current-linux-amd64.zip && \
+    mv rclone-*-linux-amd64/rclone /usr/bin && \
+    rm -rf rclone-*
+
+# Copia lo script di backup e il file di configurazione Rclone
+COPY backup.sh /backup.sh
+COPY rclone.conf /root/.config/rclone/rclone.conf
+
+# Imposta i permessi di esecuzione per lo script di backup
+RUN chmod +x /backup.sh
+
+# Comando di avvio (usa cron per eseguire lo script di backup)
+CMD ["crond", "-f", "-d", "8"]

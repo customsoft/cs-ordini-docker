@@ -1,0 +1,15 @@
+# Utilizza l'immagine di base di Nextcloud basata su PHP e Apache
+FROM nextcloud:latest
+
+# Copia il tuo certificato SSL (se necessario) nella directory appropriata dell'immagine
+# COPY ssl-cert.crt /etc/ssl/certs/ssl-cert.crt
+# COPY ssl-cert.key /etc/ssl/private/ssl-cert.key
+
+# Personalizza le opzioni di configurazione di Nextcloud (opzionale)
+# COPY config.php /var/www/html/config/config.php
+
+# Esponi la porta di default di Nextcloud
+EXPOSE 80
+
+# Comando di avvio di Apache per Nextcloud
+CMD ["apache2-foreground"]
